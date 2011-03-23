@@ -7,3 +7,19 @@ License
 -------
 
 This software is availavle under the Affero GPL 3.0 license.
+
+Attribution
+-----------
+
+Contact me if you like this software in a scientific project.
+
+Install
+-------
+
+$ groovy build.groovy
+
+Run
+-------
+
+$ export CLASSPATH=moldbvalid.jar
+$ groovy validate.groovy foo.sdf

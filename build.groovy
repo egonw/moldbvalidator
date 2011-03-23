@@ -23,7 +23,7 @@ ant.javac(
 }
 ant.groovyc(
   srcdir:"$srcdir", destdir:"$bindir",
-  includes:"**/*.groovy",
+  includes:"*.groovy",
   fork:"true") {
   classpath {
     fileset dir:"$libdir", {
@@ -32,8 +32,10 @@ ant.groovyc(
   }
 }
 
-ant.jar(
-  destfile:pkgname + ".jar",
-  basedir:"$bindir",
-  includes:"**/*.class"
-)
+ant.jar(destfile:pkgname + ".jar", compress:"true") {
+  fileset( dir:"$bindir", includes:"**/*.class" )
+  zipgroupfileset( dir:"$libdir", includes:'*.jar' )
+  manifest {
+    attribute( name: 'Main-Class', value: 'validate' )
+  }
+}
