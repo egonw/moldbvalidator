@@ -1,3 +1,6 @@
-import com.github.egonw.moldbvalid.Validate
+import com.github.egonw.moldbvalid.*
 
-Validate.validateFile(args[0])
+def validator = new Validate(
+  new RDFN3Handler(System.out)
+)
+validator.validateFile(args[0])

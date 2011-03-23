@@ -4,30 +4,38 @@ import org.openscience.cdk.io.*;
 
 public class ErrorHandler
 implements IChemObjectReaderErrorHandler {
+
+  private IReportHandler report;
+
+  public ErrorHandler(IReportHandler report) {
+    this.report = report;
+  }
+
   public void handleError(String message) {
-    System.out.println(message);
+    report.handleError(":error", message);
   };
+
   public void handleError(String message,
     Exception exception)
   {
-    System.out.println(message + "\n  -> " +
+    report.handleError(":error", message + "\n  -> " +
             exception.getMessage());
   };
+
   public void handleError(String message,
     int row, int colStart, int colEnd)
   {
-    System.out.println("location: " + row + ", " + 
-          colStart + "-" + colEnd + ": ");
-    System.out.println(message);
+    report.handleError(":error", "location: " + row + ", " + 
+      colStart + "-" + colEnd + ": " + message);
   };
+
   public void handleError(String message,
     int row, int colStart, int colEnd,
     Exception exception)
   {
-    System.out.println("location: " + row + ", " +
-          colStart + "-" + colEnd + ": ");
-    System.out.println(message + "\n  -> " +
-            exception.getMessage());
+    report.handleError(":error", "location: " + row + ", " + 
+      colStart + "-" + colEnd + ": " + message + " -> " +
+      exception.getMessage());
   };
 }
 
