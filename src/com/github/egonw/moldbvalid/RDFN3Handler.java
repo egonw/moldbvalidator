@@ -6,7 +6,8 @@ public class RDFN3Handler implements IReportHandler {
 
   private PrintStream output;
 
-  private String currentSubject = ":1";
+  private int counter = 0;
+  private String currentSubject = "";
 
   public RDFN3Handler(OutputStream output) {
     if (output instanceof PrintStream) {
@@ -16,8 +17,15 @@ public class RDFN3Handler implements IReportHandler {
     }
   }
 
+  public void setFile(String filename) {
+    output.println(":file rdfs:label \"" + filename + "\" .");
+  }
+
   public void setSubject(String subject) {
+    this.counter++;
     this.currentSubject = subject;
+    output.println(":file :describes :mol" + counter + " .");
+    output.println(":mol" + counter + "  rdfs:label \"" + subject + "\" .");
   };
 
   public void handleError(String type, String error) {

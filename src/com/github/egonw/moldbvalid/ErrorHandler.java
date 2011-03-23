@@ -12,20 +12,20 @@ implements IChemObjectReaderErrorHandler {
   }
 
   public void handleError(String message) {
-    report.handleError(":error", message);
+    report.handleError(":formatError", message);
   };
 
   public void handleError(String message,
     Exception exception)
   {
-    report.handleError(":error", message + "\n  -> " +
+    report.handleError(":formatError", message + "\n  -> " +
             exception.getMessage());
   };
 
   public void handleError(String message,
     int row, int colStart, int colEnd)
   {
-    report.handleError(":error", "location: " + row + ", " + 
+    report.handleError(":formatError", "location: " + row + ", " + 
       colStart + "-" + colEnd + ": " + message);
   };
 
@@ -33,7 +33,7 @@ implements IChemObjectReaderErrorHandler {
     int row, int colStart, int colEnd,
     Exception exception)
   {
-    report.handleError(":error", "location: " + row + ", " + 
+    report.handleError(":formatError", "location: " + row + ", " + 
       colStart + "-" + colEnd + ": " + message + " -> " +
       exception.getMessage());
   };
