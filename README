@@ -1,0 +1,9 @@
+Molecules Database Validator
+----------------------------
+
+Tool to validate molecule database files, starting with the MDL SD file format.
+
+License
+-------
+
+This software is availavle under the Affero GPL 3.0 license.
