@@ -9,9 +9,16 @@ import org.openscience.cdk.exception.*;
 import org.openscience.cdk.nonotify.*;
 import org.openscience.cdk.io.IChemObjectReader.Mode;
 import org.openscience.cdk.validate.*;
+import org.openscience.cdk.validate.basic.*;
+import org.openscience.cdk.validate.*;
 import java.io.*;
 
 public class Validate {
+
+  private final static IValidationTestType NO_ATOM_TYPE =
+    new AbstractValidationTestType("The atom's type is not recognized.") {};
+  private final static IValidationTestType ATOM_TYPE_EXC =
+    new AbstractValidationTestType("Error while atom typing of molecule.") {};
 
   IReportHandler handler;
   ValidatorEngine validator;
@@ -31,8 +38,7 @@ public class Validate {
           IAtomType[] types = matcher.findMatchingAtomType(molecule);
           for (int i=0; i<types.length; i++) {
             ValidationTest atError = new ValidationTest(
-              molecule.getAtom(i),
-              "The atom's type is not recognized."
+              NO_ATOM_TYPE, molecule.getAtom(i)
             );
             if (types[i] == null) {
               report.addError(atError);
@@ -42,8 +48,7 @@ public class Validate {
           }
         } catch (Exception exception) {
           ValidationTest test = new ValidationTest(
-            molecule,
-            "Error while atom typing of molecule."
+            ATOM_TYPE_EXC, molecule
           );
           test.setDetails(exception.getMessage());
           report.addCDKError(test);
