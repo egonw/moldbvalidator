@@ -34,7 +34,6 @@ public class Validate {
               molecule.getAtom(i),
               "The atom's type is not recognized."
             );
-            System.out.println("type: " + types[i].getAtomTypeName());
             if (types[i] == null) {
               report.addError(atError);
             } else {
@@ -68,17 +67,19 @@ public class Validate {
     while (iterator.hasNext()) {
       IMolecule mol = (IMolecule)iterator.next();
       handler.setSubject("" + mol.getProperty(CDKConstants.TITLE));
-      System.out.println("mol: " + mol.getProperty(CDKConstants.TITLE));
-      ValidationReport report = validator.validateMolecule(mol);
+      try {
+        ValidationReport report = validator.validateMolecule(mol);
+        process(handler, report);
+      } catch (Exception exception) {}
     }
   }
 
   private void process(IReportHandler handler, ValidationReport report) {
     for (ValidationTest test : report.getErrors())
-      handler.handleError(":error", test.getError());
+      handler.handleError(":error", test);
     for (ValidationTest test : report.getWarnings())
-      handler.handleError(":warning", test.getError());
+      handler.handleError(":warning", test);
     for (ValidationTest test : report.getCDKErrors())
-      handler.handleError(":cdkError", test.getError());
+      handler.handleError(":cdkError", test);
   }
 }

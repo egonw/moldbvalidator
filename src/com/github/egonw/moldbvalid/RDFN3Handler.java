@@ -2,11 +2,15 @@ package com.github.egonw.moldbvalid;
 
 import java.io.*;
 
+import org.openscience.cdk.validate.*;
+
 public class RDFN3Handler implements IReportHandler {
 
   private PrintStream output;
 
-  private int counter = 0;
+  private int fileCounter = 0;
+  private int molCounter = 0;
+  private int errorCounter = 0;
   private String currentSubject = "";
 
   public RDFN3Handler(OutputStream output) {
@@ -18,22 +22,24 @@ public class RDFN3Handler implements IReportHandler {
   }
 
   public void setFile(String filename) {
-    output.println(":file rdfs:label \"" + filename + "\" .");
+    fileCounter++;
+    output.println(":file" + fileCounter + " rdfs:label \"" + filename + "\" .");
   }
 
   public void setSubject(String subject) {
-    this.counter++;
+    this.molCounter++;
     this.currentSubject = subject;
-    output.println(":file :describes :mol" + counter + " .");
-    output.println(":mol" + counter + "  rdfs:label \"" + subject + "\" .");
+    output.println(":file" + fileCounter + " :describes :mol" + molCounter + " .");
+    output.println(":mol" + molCounter + "  rdfs:label \"" + subject + "\" .");
   };
 
-  public void handleError(String type, String error) {
-    output.print(currentSubject);
-    output.print(" ");
-    output.print(type);
-    output.print(" ");
-    output.println("\"" + error + "\" .");
+  public void handleError(String type, ValidationTest test) {
+    errorCounter++;
+    String error = ":error" + errorCounter;
+    output.println(currentSubject + " " + type + " " + error + " .");
+    output.println(error + " a :ValidationTest ;");
+    output.println(" :message \"" + test.getError() + "\" ;");
+    output.println(" :details \"" + test.getDetails() + "\" ;");
   }
 
 }
