@@ -10,5 +10,7 @@ public interface IReportHandler {
 
   public void handleError(String type, ValidationTest error);
 
+  public void handleError(String type, String error);
+
 }
 

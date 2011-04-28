@@ -58,9 +58,15 @@ public class RDFN3Handler implements IReportHandler {
     output.print(error + " a " + typeType);
     if (test.getDetails().length() > 0) {
       output.println(" .");
-      output.println(" :details \"" + test.getDetails());
+      output.print(" :details \"" + test.getDetails());
     }
     output.println(" .");
+  }
+
+  public void handleError(String type, String test) {
+    errorCounter++;
+    String error = ":hasError" + errorCounter;
+    output.println(currentSubject + " " + type + " \"" + error + "\" .");
   }
 
 }
