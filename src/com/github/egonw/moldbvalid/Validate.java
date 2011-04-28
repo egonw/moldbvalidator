@@ -41,8 +41,9 @@ public class Validate {
               NO_ATOM_TYPE, molecule.getAtom(i)
             );
             if (types[i] == null) {
-              report.addError(atError);
-            } else {
+              atError.setDetails(
+                "Atom type of a " + molecule.getAtom(i).getSymbol() + i + " not recognized"
+              );
               report.addError(atError);
             }
           }
