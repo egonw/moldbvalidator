@@ -10,6 +10,7 @@ ant.taskdef(
   classname:"org.codehaus.groovy.ant.Groovyc"
 )
 
+ant.delete(dir:"bin")
 ant.mkdir(dir:"bin")
 ant.javac(
   srcdir:"$srcdir", destdir:"$bindir",
