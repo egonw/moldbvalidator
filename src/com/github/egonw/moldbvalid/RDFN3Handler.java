@@ -24,6 +24,12 @@ public class RDFN3Handler implements IReportHandler {
       this.output = new PrintStream(output);
     }
     typesAlreadyProcessed = new HashMap<IValidationTestType,Integer>();
+
+    // output namespaces
+    this.output.println("@prefix : <http://egonw.github.com/moldbvalidator/> .");
+    this.output.println("@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .");
+    this.output.println("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .");
+    this.output.println();
   }
 
   public void setFile(String filename) {
@@ -40,8 +46,7 @@ public class RDFN3Handler implements IReportHandler {
 
   public void handleError(String type, ValidationTest test) {
     errorCounter++;
-    String error = ":hasError" + errorCounter;
-    output.println(currentSubject + " " + type + " " + error + " .");
+    String error = ":error" + errorCounter;
     int currentType = 0;
     IValidationTestType testType = test.getType();
     if (typesAlreadyProcessed.containsKey(testType)) {
@@ -52,20 +57,22 @@ public class RDFN3Handler implements IReportHandler {
       typesAlreadyProcessed.put(testType, currentType);
       // and also output to N3
       String typeType = ":ValidationTestType" + typeCounter;
-      output.println(typeType + " rdfs:label \"" + testType.getError() + "\" ;");
+      output.println(typeType + " a :ValidationTestType ;");
+      output.println(" rdfs:label \"" + testType.getError() + "\" .");
     }
+    output.println(currentSubject + " " + type + " " + error + " .");
     String typeType = ":ValidationTestType" + typeCounter;
     output.print(error + " a " + typeType);
     if (test.getDetails().length() > 0) {
-      output.println(" .");
-      output.print(" :details \"" + test.getDetails());
+      output.println(" ;");
+      output.print(" :details \"" + test.getDetails() + "\"");
     }
     output.println(" .");
   }
 
   public void handleError(String type, String test) {
     errorCounter++;
-    String error = ":hasError" + errorCounter;
+    String error = ":hasFileError" + errorCounter;
     output.println(currentSubject + " " + type + " \"" + error + "\" .");
   }
 

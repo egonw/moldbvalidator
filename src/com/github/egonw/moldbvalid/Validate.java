@@ -82,10 +82,10 @@ public class Validate {
 
   private void process(IReportHandler handler, ValidationReport report) {
     for (ValidationTest test : report.getErrors())
-      handler.handleError(":error", test);
+      handler.handleError(":hasError", test);
     for (ValidationTest test : report.getWarnings())
-      handler.handleError(":warning", test);
+      handler.handleError(":hasWarning", test);
     for (ValidationTest test : report.getCDKErrors())
-      handler.handleError(":cdkError", test);
+      handler.handleError(":hasCDKError", test);
   }
 }
